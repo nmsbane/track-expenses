@@ -151,30 +151,53 @@ const store = createStore(
   })
 );
 
+// timestamps ( milliseconds )
+// unix epoch jan 1st 1970
+
+// get visible expenses
+const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
+  return expenses.filter(expense => {
+    const startDateMatch =
+      typeof startDate !== "number" || expense.createdAt >= startDate;
+    const endDateMatch =
+      typeof endDateMatch !== "number" || expense.createdAt <= endDate;
+    // figure out if expense.description has the text variable string inside of it
+    // includes
+    // convert both string to lowercase
+    const textMatch = expense.description
+      .toLowerCase()
+      .includes(text.toLowerCase());
+
+    return startDateMatch && endDateMatch && textMatch;
+  });
+};
+
 store.subscribe(() => {
-  console.log(store.getState());
+  const state = store.getState();
+  const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
+  console.log(visibleExpenses);
 });
 
-// const expense1 = store.dispatch(
-//   addExpense({ description: "rent", amount: 100 })
-// );
-// const expense2 = store.dispatch(
-//   addExpense({ description: "coffee", amount: 100 })
-// );
+const expense1 = store.dispatch(
+  addExpense({ description: "rent", amount: 100, createdAt: 1000 })
+);
+const expense2 = store.dispatch(
+  addExpense({ description: "coffee", amount: 300, createdAt: -1000 })
+);
 
 // store.dispatch(removeExpense({ id: expense1.expense.id }));
 
 // store.dispatch(editExpense(expense2.expense.id, { amount: 500 }));
 
-// store.dispatch(setTextFilter("rent"));
+store.dispatch(setTextFilter("rent"));
 // store.dispatch(setTextFilter());
 
 // store.dispatch(sortByAmount());
 // store.dispatch(sortByDate());
 
 store.dispatch(setStartDate(125));
-store.dispatch(setStartDate());
-store.dispatch(setEndDate(300));
+// store.dispatch(setStartDate());
+// store.dispatch(setEndDate(300));
 
 // const user = {
 //   name: "bane",
