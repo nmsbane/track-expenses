@@ -156,20 +156,30 @@ const store = createStore(
 
 // get visible expenses
 const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
-  return expenses.filter(expense => {
-    const startDateMatch =
-      typeof startDate !== "number" || expense.createdAt >= startDate;
-    const endDateMatch =
-      typeof endDateMatch !== "number" || expense.createdAt <= endDate;
-    // figure out if expense.description has the text variable string inside of it
-    // includes
-    // convert both string to lowercase
-    const textMatch = expense.description
-      .toLowerCase()
-      .includes(text.toLowerCase());
+  return expenses
+    .filter(expense => {
+      const startDateMatch =
+        typeof startDate !== "number" || expense.createdAt >= startDate;
+      const endDateMatch =
+        typeof endDateMatch !== "number" || expense.createdAt <= endDate;
+      // figure out if expense.description has the text variable string inside of it
+      // includes
+      // convert both string to lowercase
+      const textMatch = expense.description
+        .toLowerCase()
+        .includes(text.toLowerCase());
 
-    return startDateMatch && endDateMatch && textMatch;
-  });
+      return startDateMatch && endDateMatch && textMatch;
+    })
+    .sort((a, b) => {
+      if (sortBy == "date") {
+        return a.createdAt < b.createdAt ? 1 : -1; // most recent expense first
+      }
+
+      if (sortBy === "amount") {
+        return a.amount < b.amount ? 1 : -1;
+      }
+    });
 };
 
 store.subscribe(() => {
@@ -193,7 +203,7 @@ store.dispatch(setTextFilter("rent"));
 // store.dispatch(setTextFilter());
 
 // store.dispatch(sortByAmount());
-// store.dispatch(sortByDate());
+store.dispatch(sortByDate());
 
 store.dispatch(setStartDate(125));
 // store.dispatch(setStartDate());
