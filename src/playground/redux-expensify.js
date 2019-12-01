@@ -18,13 +18,24 @@ const addExpense = ({
     createdAt
   }
 });
+
 // REMOVE_EXPENSE
 const removeExpense = ({ id } = {}) => ({
   type: "REMOVE_EXPENSE",
   id
 });
+
 // EDIT_EXPENSE
+const editExpense = (id, updates) => ({
+  type: "EDIT_EXPENSE",
+  id,
+  updates
+});
 // SET_TEXT_FILTER
+const setTextFilter = (text = "") => ({
+  type: "SET_TEXT_FILTER",
+  text
+});
 // SORT_BY_DATE
 // SORT_BY_AMOUNT
 // SET_START_DATE
@@ -42,6 +53,16 @@ const expensesReducer = (state = expensesReducerDefaultState, action) => {
       return state.filter(expense => {
         return expense.id !== action.id;
       });
+    case "EDIT_EXPENSE":
+      return state.map(expense => {
+        if (expense.id === action.id) {
+          return {
+            ...expense,
+            ...action.updates
+          };
+        }
+        return expense;
+      });
     default:
       return state;
   }
@@ -53,9 +74,15 @@ const filtersReducerDefaultState = {
   startDate: undefined,
   endDate: undefined
 };
+
 // Filter reducer
 const filtersReducer = (state = filtersReducerDefaultState, action) => {
   switch (action.type) {
+    case "SET_TEXT_FILTER":
+      return {
+        ...state,
+        text: action.text
+      };
     default:
       return state;
   }
@@ -98,3 +125,16 @@ const expense2 = store.dispatch(
 );
 
 store.dispatch(removeExpense({ id: expense1.expense.id }));
+
+store.dispatch(editExpense(expense2.expense.id, { amount: 500 }));
+// const user = {
+//   name: "bane",
+//   age: 24
+// };
+
+// console.log({
+//   ...user
+// });
+
+store.dispatch(setTextFilter("rent"));
+store.dispatch(setTextFilter());
