@@ -16,13 +16,22 @@ const store = configureStore();
 store.dispatch(
   addExpense({
     description: "water bill",
-    amount: 45000
+    amount: 45000,
+    createdAt: 2000
   })
 );
 
 store.dispatch(
   addExpense({
     description: "gas bill"
+  })
+);
+
+store.dispatch(
+  addExpense({
+    description: "rent",
+    amount: 109500,
+    createdAt: 1000
   })
 );
 
