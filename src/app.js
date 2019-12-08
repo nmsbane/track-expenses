@@ -35,7 +35,7 @@ store.dispatch(
   })
 );
 
-store.dispatch(setTextFilter("water"));
+// store.dispatch(setTextFilter("water"));
 const state = store.getState();
 const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
 
