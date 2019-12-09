@@ -14,6 +14,7 @@ const ExpenseList = props => (
 );
 
 const mapStateToProps = state => {
+  debugger;
   return {
     expenses: selectExpenses(state.expenses, state.filters)
   };
