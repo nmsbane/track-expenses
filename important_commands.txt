@@ -1,0 +1,3 @@
+To run jest in watch mode
+==========================
+yarn test -- --watch ( here anything after -- is passed to jest not to yarn )
