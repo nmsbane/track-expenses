@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import "normalize.css/normalize.css";
 import "./styles/styles.scss";
+import "react-dates/lib/css/_datepicker.css";
 
 // react differentiates between normal html and react component using uppercase letter
 import AppRouter from "./routers/AppRouter";
